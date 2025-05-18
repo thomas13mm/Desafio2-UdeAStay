@@ -47,6 +47,8 @@ public:
     void mostrarInformacion();
 
     void agregarAmenidad(const string& amenidad);
+
+    float getPrecioPorNoche();
 };
 
 #endif

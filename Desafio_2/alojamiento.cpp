@@ -114,3 +114,7 @@ void Alojamiento::mostrarInformacion() {
 
     cout << "Reservaciones: " << cantidadReservaciones << endl;
 }
+    float Alojamiento::getPrecioPorNoche(){
+        return precioPorNoche;
+
+}
