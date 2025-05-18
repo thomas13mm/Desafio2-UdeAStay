@@ -2,7 +2,9 @@
 #define RESERVACIONES_H
 
 #include <string>;
-#include <>;
+#include "fecha.h";
+#include "Alojamiento.h"
+#include "Huesped.h";
 
 class Reservacion{
     /*

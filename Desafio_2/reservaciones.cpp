@@ -1,6 +1,8 @@
 #include "reservaciones.h"
 #include <iostream>
 #include "fecha.h"
+#include "Huesped.h"
+#include "alojamiento.h"
 
 using namespace std;
 
@@ -18,6 +20,19 @@ Reservacion::Reservacion(string Codigo_A, string Codigo_I, Alojamiento* Alojamie
 
 Reservacion::~Reservacion(){
     //Destructor de la clase
+}
+
+Reservacion::getCodeInmueble(){
+    return Codigo_Inmueble;
+
+}
+
+Reservacion::getDuracion(){
+    return Duracion;
+}
+
+Reservacion::getFechaEntrada(){
+    return Fecha_Entrada;
 }
 
 Reservacion::calcular_monto(float valor_noche, unsigned int cant_noches){
