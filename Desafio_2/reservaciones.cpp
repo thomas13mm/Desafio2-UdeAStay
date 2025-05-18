@@ -14,7 +14,10 @@ Reservacion::Reservacion(string Codigo_A, string Codigo_I, Alojamiento* Alojamie
     Mpago=Mpago_;
     Monto=Monto_;
     Anotaciones=Anotaciones_;
+}
 
+Reservacion::~Reservacion(){
+    //Destructor de la clase
 }
 
 Reservacion::calcular_monto(float valor_noche, unsigned int cant_noches){

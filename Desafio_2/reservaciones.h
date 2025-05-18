@@ -5,6 +5,12 @@
 #include <>;
 
 class Reservacion{
+    /*
+    Clase:
+        Reservacion es una clase que permite el manejo de un sistema para hacer reservas, de forma dinamica evitanto
+    la clonacion de reservas y usando de forma eficiente la memoria.
+    */
+
     private:
         string Codigo_Reserva;//agregar esto al diagrama de clase(cambie el nombre Codigo)
         string Codigo_Inmueble;//agragar esto al diagrama de clase
@@ -16,7 +22,23 @@ class Reservacion{
         float Monto;
         string Anotaciones;
     public:
+    /*
+    Constructor:
+        La reservacion para un objeto de esta clase esta dada por:
+    Param:
+        -(string)Codigo_Reserva: string que almacena el codigo de 5 digitos de la reserva
+        -(string)Codigo_Inmueble: string que almacena el codigo alfa-numerico de 4 digitos del inmueble
+        -(Alojamiento*)Alojamiento: Apuntador a un objeto del tipo alojamiento
+        -(Huesped*)Huesped: Apuntador a un objeto del tipo Huesped
+        -(Fecha)Fecha_Entrada: Fecha que almacena la fecha de ingreso del huesped al hospedaje
+        -(unsigned int)Duracion: numero que guarda la cantidad de noches que va permanecer el huesped en la propiedad
+        -(string)Mpago: string que contiene el metodo de pago del huesped PSE o TCredito
+        -(float)Monto: numero real que guarda el monto pagado por el ususario
+        -(string)Anotaciones: string que guarda los comentarios del huesped para el hospedaje
+*/
+
         Reservacion(string, string, Alojamiento*, Huesped*, Fecha, unsigned int, string, float, string);
+        ~Reservacion();
         //string getCodeReserva();
         Fecha getFechaEntrada();
         string getCodeInmueble();
