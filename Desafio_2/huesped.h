@@ -3,7 +3,15 @@
 
 #include "reservaciones.h"
 #include <string>
-
+/**
+ *  Huesped
+ *  Representa un huésped del sistema de reservaciones
+ *
+ * Gestiona:
+ * - Información personal (documento, antigüedad, puntuación)
+ * - Lista dinámica de reservaciones
+ * - Operaciones básicas de reservación
+ */
 class Huesped {
 private:
     std::string documento;

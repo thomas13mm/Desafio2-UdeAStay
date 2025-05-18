@@ -1,6 +1,12 @@
 #include "Huesped.h"
 #include <iostream>
+/**
+ *  Huesped.cpp
+ *  Implementación de la clase Huesped para gestión de reservas de hotel
+ * Maneja la creación, cancelación y visualización de reservas con validación
+ * de fechas y capacidad dinámica. Integra con Alojamiento y Reservacion.
 
+ */
 Huesped::Huesped(const std::string& doc, int ant, float punt)
     : documento(doc), antiguedad(ant), puntuacion(punt) {
     capacidadReservaciones = 5;
