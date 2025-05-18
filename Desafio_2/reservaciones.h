@@ -14,11 +14,11 @@ class Reservacion{
     */
 
     private:
-        string Codigo_Reserva;//agregar esto al diagrama de clase(cambie el nombre Codigo)
-        string Codigo_Inmueble;//agragar esto al diagrama de clase
+        string Codigo_Reserva;
+        string Codigo_Inmueble;
         Alojamiento* Alojamiento;
         Huesped* Huesped;
-        Fecha Fecha_Entrada;//cambiar el tipo de dato en el diagrama de clase (unsigned int por fecha)
+        Fecha Fecha_Entrada;
         unsigned int Duracion;
         string Mpago;
         float Monto;
@@ -42,12 +42,14 @@ class Reservacion{
         Reservacion(string, string, Alojamiento*, Huesped*, Fecha, unsigned int, string, float, string);
         ~Reservacion();
         //string getCodeReserva();
+        string getCodigoReserva();
+        Huesped* getHuespeds();
         Fecha getFechaEntrada();
         string getCodeInmueble();
         unsigned int getDuracion();
-        float calcular_monto();
+        float calcular_monto(float valor_noche, unsigned int cant_noches);
         void Mostrar_comprobante();
-        bool Validar_Disponibilidad();
+        bool Validar_Disponibilidad(Reservacion* Reservas);
 };
 
 #endif // RESERVACIONES_H

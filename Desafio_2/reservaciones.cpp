@@ -22,6 +22,14 @@ Reservacion::~Reservacion(){
     //Destructor de la clase
 }
 
+Reservacion::getCodigoReserva(){
+    return Codigo_Reserva;
+}
+
+Reservacion::getHuespeds(){
+    return Huesped;
+}
+
 Reservacion::getCodeInmueble(){
     return Codigo_Inmueble;
 
