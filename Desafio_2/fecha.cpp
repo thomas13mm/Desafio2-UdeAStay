@@ -1,142 +1,98 @@
 #include "Fecha.h"
 #include <iostream>
-////
+
 using namespace std;
 
-Fecha::Fecha() {
-    dia = 0;
-    mes = 0;
-    ano = 0;
-}
 
-Fecha::Fecha(unsigned short int d, unsigned short int m, unsigned int a) {
-    dia = d;
-    mes = m;
-    ano = a;
-}
+Fecha::Fecha() : dia(0), mes(0), ano(0) {}
 
-unsigned short int Fecha::getDia() {
-    return dia;
-}
+Fecha::Fecha(unsigned short int d, unsigned short int m, unsigned int a)
+    : dia(d), mes(m), ano(a) {}
 
-unsigned short int Fecha::getMes() {
-    return mes;
-}
 
-unsigned int Fecha::getAno() {
-    return ano;
-}
+unsigned short int Fecha::getDia() const { return dia; }
+unsigned short int Fecha::getMes() const { return mes; }
+unsigned int Fecha::getAno() const { return ano; }
 
-const char* Fecha::getNombreMes() {
-    const char* nombres[] = {
+
+const char* Fecha::getNombreMes() const {
+    static const char* nombres[] = {
         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
     };
-    if (mes >= 1 && mes <= 12) {
-        return nombres[mes - 1];
+    return (mes >= 1 && mes <= 12) ? nombres[mes - 1] : "Mes inválido";
+}
+
+bool Fecha::esMenor(const Fecha& otra) const {
+    return (ano < otra.ano) ||
+          (ano == otra.ano && mes < otra.mes) ||
+          (ano == otra.ano && mes == otra.mes && dia < otra.dia);
+}
+
+int Fecha::getDiaSemana() const {
+    if (mes < 3) {
+        mes += 12;
+        ano -= 1;
     }
-    return "Mes inválido";
+    int k = ano % 100;
+    int j = ano / 100;
+    return (dia + 13 * (mes + 1) / 5 + k + k / 4 + j / 4 + 5 * j) % 7;
 }
 
-bool Fecha::esMenor(Fecha otra) {
-    if (ano < otra.ano) return true;
-    if (ano == otra.ano && mes < otra.mes) return true;
-    if (ano == otra.ano && mes == otra.mes && dia < otra.dia) return true;
-    return false;
-}
-
-void Fecha::sumarDias(unsigned int dias) {
-    static const unsigned short diasMesNormal[] = {
-        31, 28, 31, 30, 31, 30,
-        31, 31, 30, 31, 30, 31
-    };
-
-    while (dias > 0) {
-        unsigned short diasEnMes = diasMesNormal[mes - 1];
-        if (mes == 2 && ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0))) {
-            diasEnMes = 29;
-        }
-
-        unsigned short restantes = diasEnMes - dia;
-
-        if (dias <= restantes) {
-            dia += dias;
-            dias = 0;
-        } else {
-            dias -= (restantes + 1);
-            dia = 1;
-            mes++;
-            if (mes > 12) {
-                mes = 1;
-                ano++;
-            }
-        }
-    }
-}
-
-int Fecha::getDiaSemana() {
-    int d = dia;
-    int m = mes;
-    int a = ano;
-
-    if (m < 3) {
-        m += 12;
-        a -= 1;
-    }
-
-    int k = a % 100;
-    int j = a / 100;
-
-    int h = (d + 13 * (m + 1) / 5 + k + k / 4 + j / 4 + 5 * j) % 7;
-
-    return (h + 6) % 7;
-}
-
-bool Fecha::CompararFecha(Fecha otra) {
+bool Fecha::CompararFecha(const Fecha& otra) const {
     return dia == otra.dia && mes == otra.mes && ano == otra.ano;
 }
 
-bool Fecha::VerificacionFecha() {
-    if (dia == 0 || mes == 0 || ano == 0) {
-        cout << "Error: La fecha no puede tener ceros.\n";
-        return false;
-    }
-
-    if (mes < 1 || mes > 12) {
-        cout << "Error: Mes inválido.\n";
-        return false;
-    }
+bool Fecha::VerificacionFecha() const {
+    if (dia == 0 || mes == 0 || ano == 0) return false;
+    if (mes > 12) return false;
 
     unsigned short diasMes;
     switch (mes) {
-    case 1: case 3: case 5: case 7: case 8: case 10: case 12:
-        diasMes = 31;
-        break;
-    case 4: case 6: case 9: case 11:
-        diasMes = 30;
-        break;
-    case 2:
-        if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)) {
-            diasMes = 29;
-        } else {
-            diasMes = 28;
-        }
-        break;
-    default:
-        cout << "Error: Mes inválido.\n";
-        return false;
+        case 4: case 6: case 9: case 11: diasMes = 30; break;
+        case 2:
+            diasMes = ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0) ? 29 : 28;
+            break;
+        default: diasMes = 31;
     }
 
-    if (dia < 1 || dia > diasMes) {
-        cout << "Error: Día inválido para el mes.\n";
-        return false;
-    }
-
-    return true;
+    return dia <= diasMes;
 }
 
-void Fecha::mostrar() {
+void Fecha::mostrar() const {
     cout << (dia < 10 ? "0" : "") << dia << "/"
          << (mes < 10 ? "0" : "") << mes << "/"
-         << ano << endl;
+         << ano;
+}
+
+
+void Fecha::sumarDias(unsigned int dias) {
+    *this = *this + dias;
+}
+
+Fecha Fecha::operator+(unsigned int dias) const {
+    Fecha resultado = *this;
+    static const unsigned short diasMes[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+
+    while (dias > 0) {
+        unsigned short diasEnMes = diasMes[resultado.mes - 1];
+        if (resultado.mes == 2 && ((resultado.ano % 4 == 0 && resultado.ano % 100 != 0) ||
+                                  (resultado.ano % 400 == 0))) {
+            diasEnMes = 29;
+        }
+
+        unsigned short disponibles = diasEnMes - resultado.dia;
+        if (dias <= disponibles) {
+            resultado.dia += dias;
+            break;
+        } else {
+            dias -= disponibles + 1;
+            resultado.dia = 1;
+            if (++resultado.mes > 12) {
+                resultado.mes = 1;
+                resultado.ano++;
+            }
+        }
+    }
+    return resultado;
 }
