@@ -2,7 +2,6 @@
 #include <cstring>
 #include <iostream>
 
-// Constructor
 Alojamiento::Alojamiento(const string& nombre, char codigo, Anfitrion* anfitrion,
                          const string& departamento, const string& municipio,
                          const string& tipo, const string& direccion, float precio) :
