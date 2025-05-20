@@ -2,6 +2,9 @@
 #define ANFITRION_H
 
 #include <string>
+#include <iostream>
+
+using namespace std;
 
 class Anfitrion{
     /*
@@ -29,6 +32,7 @@ class Anfitrion{
 */
         Anfitrion(string, unsigned short int, float, Alojamiento*);
         ~Anfitrion();
+        string getDocumento();
         bool CancelarReservas();
         void ConsultarReservas();
         void ActualizarHistorico();
