@@ -4,8 +4,12 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        alojamiento.cpp \
-        main.cpp
+        main.cpp\
+        anfitrion.cpp\
+        alojamiento.cpp\
+        reservaciones.cpp
 
 HEADERS += \
-    alojamiento.h
+    anfitrion.h \
+    alojamiento.h\
+    reservaciones.h

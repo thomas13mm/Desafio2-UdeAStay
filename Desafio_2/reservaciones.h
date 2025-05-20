@@ -47,7 +47,7 @@ class Reservacion{
         unsigned int getDuracion();
         float calcular_monto();
         void Mostrar_comprobante();
-        bool Validar_Disponibilidad();
+        bool Validar_Disponibilidad(Reservacion* Reservas);
 };
 
 #endif // RESERVACIONES_H

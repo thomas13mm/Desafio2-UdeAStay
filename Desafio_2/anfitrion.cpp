@@ -18,7 +18,11 @@ Anfitrion::~Anfitrion(){
 
 }
 
-Anfitrion::ActualizarHistorico(Fecha Fecha_Corte, Reservacion* reservaciones){
+Anfitrion::getDocumento(){
+    return Documento;
+}
+
+Anfitrion::ActualizarHistorico(Fecha Fecha_Corte, Reservacion** reservaciones){
     try{
         ofstream Linea("Historico.txt");
         for(unsigned int i=0; i<365; i++){
@@ -30,10 +34,12 @@ Anfitrion::ActualizarHistorico(Fecha Fecha_Corte, Reservacion* reservaciones){
                 !reservaciones[i].Validar_Disponibilidad(reservaciones)) {
 
                 Linea << "Reserva: " << (reservaciones[i].getCodeInmueble()).to_string()<<'\n';
+                Linea << "Propiedad de: " << (reservaciones[i])
                 Linea << " Reservado por: "<<documento;
                 Linea << " Fecha Entrada: "<<(reservaciones[i].getFechaEntrada()).to_string()<<'\n';
                 Linea << " Fecha Salida: "<<(reservaciones[i].getFechaEntrada()).sumarDias((reservaciones[i].getDuracion()))<<'\n';
                 Linea << endl;
+            }
         }
     }
     catch(){
@@ -41,4 +47,13 @@ Anfitrion::ActualizarHistorico(Fecha Fecha_Corte, Reservacion* reservaciones){
     }
 }
 
+Anfitrion::ConsultarReservas(string** reservas, const unsigned int &filas){
+    const unsigned int ColumnaDoc=0;
+    for(unsigned int i=0;  i<filas; i++){
+        if((reservas[i][ColumnaDoc]) == getDocumento()){
+            while((reservas[i][ColumnaDoc+1])!=){
+
+            }
+        }
+}
 
