@@ -2,7 +2,7 @@
 #define ALOJAMIENTO_H
 
 #include "Anfitrion.h"
-#include "Reservacion.h"
+#include "reservaciones.h"
 #include "Fecha.h"
 #include <string>
 
@@ -47,6 +47,8 @@ public:
     void mostrarInformacion();
 
     void agregarAmenidad(const string& amenidad);
+
+    float getPrecioPorNoche();
 };
 
 #endif
