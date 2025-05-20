@@ -5,6 +5,7 @@
 #include<fstream>
 #include<string>
 
+
 using namespace std;
 
 void CargarMatriz(string fileName, string** ptrK, const unsigned int &filas, const unsigned int &columnas);
@@ -78,6 +79,7 @@ void CargarMatriz(const string fileName, string** ptrK, const unsigned int &fila
 
     Informacion.close();
 }
+
 
 
 
