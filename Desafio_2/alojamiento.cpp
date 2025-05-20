@@ -14,9 +14,9 @@ Alojamiento::Alojamiento(const string& nombre, char codigo, Anfitrion* anfitrion
     direccion(direccion),
     precioPorNoche(precio),
     cantidadAmenidades(0),
-    capacidadAmenidades(5),
+    capacidadAmenidades(20),
     cantidadReservaciones(0),
-    capacidadReservaciones(10)
+    capacidadReservaciones(100)
 {
     amenidades = new string[capacidadAmenidades];
     reservaciones = new Reservacion*[capacidadReservaciones];
