@@ -18,42 +18,69 @@ Huesped::~Huesped() {
 
 
 
-/*bool Huesped::hacerReservacion(Alojamiento* alojamiento, Fecha fechaEntrada, int duracion, const std::string& metodoPago) {
-                                                                                                           corregir
+bool Huesped::hacerReservacion(const std::string& codigoReserva, const std::string& codigoInmueble,Alojamiento* alojamiento,
+                               const Fecha& fechaEntrada,unsigned short duracion,const std::string& metodoPago, float monto,
+                               const std::string& anotaciones, Reservacion*& listaReservaciones) {
+
     Fecha fechaSalida = fechaEntrada.sumarDias(duracion);
+
+
     if (!alojamiento->mostrarDisponibilidad(fechaEntrada, fechaSalida)) {
         return false;
     }
 
-    if (validarSuperposicionFechas(fechaEntrada, fechaSalida)) {
-        return false;
+    if (listaReservaciones != nullptr) {
+        Fecha otraEntrada = listaReservaciones->getFechaEntrada();
+        Fecha otraSalida = otraEntrada.sumarDias(listaReservaciones->getDuracion());
+
+        if (!(fechaSalida <= otraEntrada || fechaEntrada >= otraSalida)) {
+            return false;
+        }
     }
 
-    float monto = alojamiento->getPrecioPorNoche() * duracion;
-    Fecha fechaPago = Fecha::obtenerFechaActual();
-    std::string codigo = "R" + std::to_string(cantidadReservaciones + 1);
+    listaReservaciones = new Reservacion(codigoReserva, codigoInmueble, alojamiento,
+                                         fechaEntrada, duracion, metodoPago, monto, anotaciones);
 
-    Reservacion* nueva = new Reservacion(codigo, alojamiento, this, fechaEntrada, duracion, metodoPago, fechaPago, monto, "");
-    if (cantidadReservaciones == capacidadReservaciones) {
-        expandirReservaciones();
-    }
-    reservaciones[cantidadReservaciones++] = nueva;
-    alojamiento->agregarReservacion(nueva);
+    alojamiento->agregarReservacion(listaReservaciones);
+
     return true;
 }
 
-bool Huesped::cancelarReservacion(const std::string& codigoReservacion) {
-    for (int i = 0; i < cantidadReservaciones; ++i) {
-        if (reservaciones[i]->getCodigo() == codigoReservacion) {
-            reservaciones[i]->getAlojamiento()->eliminarReservacion(codigoReservacion);
-            delete reservaciones[i];
-            for (int j = i; j < cantidadReservaciones - 1; ++j) {
-                reservaciones[j] = reservaciones[j + 1];
-            }
-            cantidadReservaciones--;
-            return true;
-        }
+bool Huesped::cancelarReservacion(const std::string& codigoReservacion, Reservacion*& listaReservaciones) {
+
+    if (listaReservaciones == nullptr) {
+        return false;
     }
+
+
+    if (listaReservaciones->getCodigoReserva() == codigoReservacion) {
+
+        listaReservaciones->getAlojamiento()->eliminarReservacion(codigoReservacion);
+
+
+        delete listaReservaciones;
+        listaReservaciones = nullptr;
+
+        return true;
+    }
+
     return false;
 }
-*/
+
+void Huesped::mostrarReservaciones() const {
+    if (cantidadReservaciones == 0) {
+        std::cout << "No hay reservaciones registradas para este huésped." << std::endl;
+        return;
+    }
+
+    std::cout << "Reservaciones del huésped con documento: " << documento << std::endl;
+    std::cout << "----------------------------------------------" << std::endl;
+
+    for (int i = 0; i < cantidadReservaciones; ++i) {
+        std::cout << "Reservación #" << (i + 1) << ":" << std::endl;
+        reservaciones[i]->Mostrar_comprobante();
+        std::cout << "----------------------------------------------" << std::endl;
+    }
+}
+
+

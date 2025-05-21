@@ -20,7 +20,7 @@ class Reservacion{
         string Codigo_Inmueble;
         Alojamiento* Inmueble;
         Fecha Fecha_Entrada;
-        unsigned int Duracion;
+        unsigned short Duracion;
         string Mpago;
         float Monto;
         string Anotaciones;
@@ -46,7 +46,7 @@ class Reservacion{
         Fecha getFechaEntrada();
         string getCodeInmueble();
         unsigned int getDuracion();
-        float calcular_monto(float valor_noche, unsigned int cant_noches);
+        float calcular_monto(float valor_noche, unsigned short cant_noches);
         void Mostrar_comprobante();
         bool Validar_Disponibilidad(Reservacion* Reservas);
 };

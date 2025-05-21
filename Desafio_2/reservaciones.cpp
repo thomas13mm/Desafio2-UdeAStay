@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Reservacion::Reservacion(string Codigo_A, string Codigo_I, Alojamiento* Alojamiento_, Fecha Fecha_Entrada_, unsigned int Duracion_, string Mpago_, float Monto_, string Anotaciones_){
+Reservacion::Reservacion(string Codigo_A, string Codigo_I, Alojamiento* Alojamiento_, Fecha Fecha_Entrada_, unsigned short Duracion_, string Mpago_, float Monto_, string Anotaciones_){
     Codigo_Reserva=Codigo_A;
     Codigo_Inmueble=Codigo_I;
     Inmueble=Alojamiento_;
@@ -36,7 +36,7 @@ unsigned int Reservacion::getDuracion(){
 Fecha Reservacion::getFechaEntrada(){
     return Fecha_Entrada;
 }
-float Reservacion::calcular_monto(float valor_noche, unsigned int cant_noches){
+float Reservacion::calcular_monto(float valor_noche, unsigned short cant_noches){
     return valor_noche*cant_noches;
 }
 
@@ -71,7 +71,7 @@ void Reservacion::Mostrar_comprobante(){
         }
     }
     Fecha FechaReservaI=Reservas[i].getFechaEntrada();//estas son como las fecha de entrada y duracion pero del objeto de reserva de la lista
-    unsigned int DuracionI=Reservas[i].getDuracion();
+    unsigned short DuracionI=Reservas[i].getDuracion();
     Fecha Fecha_FinalI=FechaReservaI+DuracionI;
     if(Fecha_Entrada.esMenor(Fecha_FinalI)){
         return true;

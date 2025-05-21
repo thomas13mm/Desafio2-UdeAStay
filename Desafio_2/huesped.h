@@ -20,15 +20,19 @@ private:
     std::string documento;
     int antiguedad;
     float puntuacion;
-    Reservacion** reservaciones;
+    Reservacion* reservaciones;
 
 public:
     Huesped(const std::string& doc, int antiguedad, float puntuacion);
     ~Huesped();
 
-    //bool hacerReservacion(Alojamiento* alojamiento, Fecha fechaEntrada, int duracion, const std::string& metodoPago);
-    //bool cancelarReservacion(const std::string& codigoReservacion);
-    //void mostrarReservaciones();
+    bool hacerReservacion(const std::string& codigoReserva,const std::string& codigoInmueble, Alojamiento* alojamiento,
+                          const Fecha& fechaEntrada, unsigned short duracion, const std::string& metodoPago, float monto,
+                          const std::string& anotaciones,Reservacion*& listaRervaciones );
+
+    bool cancelarReservacion(const std::string& codigoReservacion, Reservacion*& listaReservaciones);
+
+    void mostrarReservaciones() const;
 
 
 };
