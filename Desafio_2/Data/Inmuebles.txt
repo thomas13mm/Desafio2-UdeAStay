@@ -1,0 +1,7 @@
+Casa,Antioquia-Bello,Av44a #63-109,Piscina-Jardin-Balcones,La niña
+Apartamento,Antioquia-La estrella,Av56b #58-115,Piscina-Balcones,La pinta
+Casa,Antioquia-Arboletes,Carrera 85a #62-138,Piscina-Cochera-gym,La santa maria
+Apartamento,Antioquia-Bello,Carrera 65a #85-420,Balcones-Jardin-Gym,Empire states
+Apartamento,Antioquia-Arboletes,Calle 45c Udea,Cochera-Gym,Twin towers
+Casa,Antioquia-La estrella,Av44a #85-128,Piscina,Motel 65
+Apartamento,Antioquia-La estrella,Av56b #58-115,Jardin-Gym,Chernobyl

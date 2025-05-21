@@ -9,9 +9,9 @@
 using namespace std;
 
 void CargarMatriz(string fileName, string** ptrK, const unsigned int &filas, const unsigned int &columnas);
-string** CargarData(const unsigned int &filas, const unsigned int &columnas, string &name);
+string** CargarData(const unsigned int &filas, const unsigned int &columnas, string name);
 
-string** CargarData(const unsigned int &filas, const unsigned int &columnas, string &name) {
+string** CargarData(const unsigned int &filas, const unsigned int &columnas, string name) {
     /*
     Sinopsis:
         Funcion encargada de crear una matriz parcialmente dinamica de strings
@@ -20,12 +20,12 @@ string** CargarData(const unsigned int &filas, const unsigned int &columnas, str
         -(const unsigned int)columnas: cantidad de columnas de la matriz
         -(string)name: nombre del archivo que contiene la data
 */
-    string** Anfitrion = new string*[filas];
+    string** matx = new string*[filas];
     for (unsigned int i = 0; i < filas; i++) {
-        Anfitrion[i] = new string[columnas];
+        matx[i] = new string[columnas];
     }
-    CargarMatriz(name, Anfitrion, filas, columnas);
-    return Anfitrion;
+    CargarMatriz(name, matx, filas, columnas);
+    return matx;
 }
 
 void CargarMatriz(const string fileName, string** ptrK, const unsigned int &filas, const unsigned int &columnas) {
@@ -80,7 +80,16 @@ void CargarMatriz(const string fileName, string** ptrK, const unsigned int &fila
     Informacion.close();
 }
 
+bool Pertenece(string** &matriz,string doc, const unsigned int &filas, unsigned int &i){
+    for (i = 0; i < filas; ++i) {
+        if (matriz[i][0] == doc) {
+            return true;
+        }
+    }
+    i = 0;
+    return false;
 
+}
 
 
 

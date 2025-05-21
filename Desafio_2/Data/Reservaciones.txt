@@ -1,7 +1,7 @@
-00000,AA00,15/05/2025,PSE,14/05/2025,$1200000,Casa,Antioquia-Bello,Av44a #63-109,Piscina-Jardin-Balcones,La niña
-00001,AA01,17/05/2025,PSE,9/05/2025,$2320000,Casa,Antioquia-La estrella,Av56b #58-115,Piscina-Balcones,La pinta
-00002,AA02,3/05/2025,PSE,3/05/2025,$800000,Casa,Antioquia-Arboletes,Carrera 85a #62-138,Piscina-Cochera-gym,La santa maria
-00003,AA03,9/05/2025,Tcredito,8/05/2025,$953000,Apartamento,Antioquia-Bello,Carrera 65a #85-420,Balcones-Jardin-Gym,Empire states
-00004,AA04,20/05/2025,Tcredito,20/05/2025,$1450000,Apartamento,Antioquia-Arboletes,Calle 45c Udea,Cochera-Gym,Twin towers
-00005,AA05,17/05/2025,PSE,16/05/2025,$200000,Casa,Antioquia-La estrella,Av44a #85-128,Piscina,Motel 65
-00006,AA01,25/05/2025,Tcredito,17/05/2025,$2320000,Apartamento,Antioquia-La estrella,Av56b #58-115,Jardin-Gym,Chernobyl
+00000,AA00,15/05/2025,PSE,14/05/2025,$1200000
+00001,AA01,17/05/2025,PSE,9/05/2025,$2320000
+00002,AA02,3/05/2025,PSE,3/05/2025,$800000
+00003,AA03,9/05/2025,Tcredito,8/05/2025,$953000
+00004,AA04,20/05/2025,Tcredito,20/05/2025,$1450000
+00005,AA05,17/05/2025,PSE,16/05/2025,$200000
+00006,AA01,25/05/2025,Tcredito,17/05/2025,$2320000
