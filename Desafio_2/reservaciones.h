@@ -1,10 +1,12 @@
 #ifndef RESERVACIONES_H
 #define RESERVACIONES_H
 
-#include <string>;
-#include "fecha.h";
-#include "Alojamiento.h"
-#include "Huesped.h";
+#include <string>
+#include "fecha.h"
+#include "alojamiento.h"
+
+
+using namespace std;
 
 class Reservacion{
     /*
@@ -16,8 +18,7 @@ class Reservacion{
     private:
         string Codigo_Reserva;
         string Codigo_Inmueble;
-        Alojamiento* Alojamiento;
-        Huesped* Huesped;
+        Alojamiento* Inmueble;
         Fecha Fecha_Entrada;
         unsigned int Duracion;
         string Mpago;
@@ -39,11 +40,9 @@ class Reservacion{
         -(string)Anotaciones: string que guarda los comentarios del huesped para el hospedaje
 */
 
-        Reservacion(string, string, Alojamiento*, Huesped*, Fecha, unsigned int, string, float, string);
+        Reservacion(string, string, Alojamiento*, Fecha, unsigned int, string, float, string);
         ~Reservacion();
-        //string getCodeReserva();
         string getCodigoReserva();
-        Huesped* getHuespeds();
         Fecha getFechaEntrada();
         string getCodeInmueble();
         unsigned int getDuracion();

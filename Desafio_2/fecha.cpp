@@ -30,13 +30,17 @@ bool Fecha::esMenor(const Fecha& otra) const {
 }
 
 int Fecha::getDiaSemana() const {
-    if (mes < 3) {
-        mes += 12;
-        ano -= 1;
+    int m = mes;
+    int y = ano;
+
+    if (m < 3) {
+        m += 12;
+        y -= 1;
     }
-    int k = ano % 100;
-    int j = ano / 100;
-    return (dia + 13 * (mes + 1) / 5 + k + k / 4 + j / 4 + 5 * j) % 7;
+
+    int k = y % 100;
+    int j = y / 100;
+    return (dia + 13 * (m + 1) / 5 + k + k / 4 + j / 4 + 5 * j) % 7;
 }
 
 bool Fecha::CompararFecha(const Fecha& otra) const {
@@ -51,7 +55,7 @@ bool Fecha::VerificacionFecha() const {
     switch (mes) {
         case 4: case 6: case 9: case 11: diasMes = 30; break;
         case 2:
-            diasMes = ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0) ? 29 : 28;
+            diasMes = ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0) ? 29 : 28);
             break;
         default: diasMes = 31;
     }

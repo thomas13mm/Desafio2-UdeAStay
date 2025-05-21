@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include "Alojamiento.h"
 
 using namespace std;
 
