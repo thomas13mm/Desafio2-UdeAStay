@@ -9,18 +9,18 @@ using namespace std;
 class Alojamiento {
 private:
     string nombre;
-    const char codigo;
+    string codigo;
     string departamento;
     string municipio;
     string tipo;
     string direccion;
     float precioPorNoche;
-    string* amenidades;
+    string amenidades;
 
 public:
-    Alojamiento(const string& nombre, char codigo,
+    Alojamiento(const string& nombre, string codigo,
                 const string& departamento, const string& municipio,
-                const string& tipo, const string& direccion, float precio, string* &amenidades);
+                const string& tipo, const string& direccion, float precio, string amenidadess);
 
     ~Alojamiento();
 

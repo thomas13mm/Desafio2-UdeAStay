@@ -18,6 +18,7 @@
 class Huesped {
 private:
     std::string documento;
+    std::string nombre;
     int antiguedad;
     float puntuacion;
     Reservacion* reservaciones;

@@ -3,9 +3,9 @@
 #include <iostream>
 
 // Constructor
-Alojamiento::Alojamiento(const string& nombre, char codigo,
+Alojamiento::Alojamiento(const string& nombre, string codigo,
                          const string& departamento, const string& municipio,
-                         const string& tipo, const string& direccion, float precio, string* &amenidades)
+                         const string& tipo, const string& direccion, float precio, string amenidadess)
     : nombre(nombre),
     codigo(codigo),
     departamento(departamento),
@@ -13,7 +13,7 @@ Alojamiento::Alojamiento(const string& nombre, char codigo,
     tipo(tipo),
     direccion(direccion),
     precioPorNoche(precio),
-    amenidades(new string)
+    amenidades(amenidadess)
 {
 
 }
