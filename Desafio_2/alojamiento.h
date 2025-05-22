@@ -4,29 +4,40 @@
 #include "Fecha.h"
 #include <string>
 
-using namespace std;
+
+class Reservacion;
 
 class Alojamiento {
 private:
-    string nombre;
-    string codigo;
-    string departamento;
-    string municipio;
-    string tipo;
-    string direccion;
+    std::string nombre;
+    std::string codigo;
+    std::string departamento;
+    std::string municipio;
+    std::string tipo;
+    std::string direccion;
     float precioPorNoche;
-    string amenidades;
+    std::string amenidades;
+    Reservacion** reservaciones;
+    int cantidadReservaciones;
 
 public:
-    Alojamiento(const string& nombre, string codigo,
-                const string& departamento, const string& municipio,
-                const string& tipo, const string& direccion, float precio, string amenidadess);
-
+    Alojamiento(const std::string& nombre, const std::string& codigo,
+                const std::string& departamento, const std::string& municipio,
+                const std::string& tipo, const std::string& direccion,
+                float precio, const std::string& amenidades);
     ~Alojamiento();
 
-    //bool mostrarDisponibilidad(Fecha inicio, Fecha fin);
-    void mostrarInformacion();
-    float getPrecioPorNoche();
+
+    void mostrarInformacion() const;
+    float getPrecioPorNoche() const;
+    std::string getCodigo() const;
+    std::string getNombre() const;
+    std::string getTipo() const;
+
+
+    bool estaDisponible(const Fecha& inicio, const Fecha& fin) const;
+    void agregarReservacion(Reservacion* reserva);
+    void eliminarReservacion(const std::string& codigoReserva);
 };
 
 #endif

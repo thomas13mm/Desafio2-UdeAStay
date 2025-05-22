@@ -2,42 +2,26 @@
 #define ANFITRION_H
 
 #include <string>
-#include <iostream>
 #include "Alojamiento.h"
+#include "Fecha.h"
+#include "reservaciones.h"
 
-using namespace std;
+class Anfitrion {
+private:
+    std::string documento;
+    Alojamiento* propiedades;
+    unsigned int cantidadPropiedades;
 
-class Anfitrion{
-    /*
-    Clase:
-        Clase para la creacion de objetos que simulan un administrador de propiedades
-    en el programa.
-*/
-    private:
-        string Documento;
-        unsigned short int Antiguedad;
-        float Puntuacion;
-        Alojamiento* Propiedades;
+public:
+    Anfitrion(std::string documento, Alojamiento* propiedades, unsigned int cantidad);
+    ~Anfitrion();
 
-    public:
-    /*
-    Constructor:
-        Inicializa los objetos del tipo Anfitrion con sus respectivas caracteristicas
-    Param:
-        -(string)Documento: Cadena de texto que incluye el documento que identifica la persona
-        -(unsigned short int)Antiguedad: Numero que contiene la cantidad de tiempo que lleva en
-        la aplicacion (en meses)
-        -(float)Puntuacion: numero de 0.0 a 5.0 de la calificacion como anfitrion de la propiedad
-        -(Alojamiento*)Propiedades: Apuntador a un arreglo de Alojamientos, que pertenecen a un anfitrion
+    bool cancelarReservacion(std::string codigoReserva, Reservacion** reservaciones, unsigned int totalReservaciones);
 
-*/
-        Anfitrion(string, unsigned short int, float, Alojamiento*);
-        ~Anfitrion();
-        string getDocumento();
-        bool CancelarReservas();
-        void ConsultarReservas();
-        void ActualizarHistorico();
+    void consultarReservacionesActivas(Reservacion** reservaciones, unsigned int totalReservaciones,
+                                       Fecha fechaInicio, Fecha fechaFin);
 
+    void actualizarHistorico(Fecha fechaCorte, Reservacion** reservaciones, unsigned int& totalReservaciones);
 };
 
-#endif // ANFITRION_H
+#endif

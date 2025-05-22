@@ -1,37 +1,41 @@
 #include "Huesped.h"
-#include <iostream>
-/**
- *  Huesped.cpp
- *  Implementación de la clase Huesped para gestión de reservas de hotel
- * Maneja la creación, cancelación y visualización de reservas con validación
- * de fechas y capacidad dinámica. Integra con Alojamiento y Reservacion.
+#include "Alojamiento.h"
+#include "reservaciones.h"
+#include "Fecha.h"
 
+#include <iostream>
+
+/**
+ * Implementación de la clase Huesped para gestión de reservas
  */
-Huesped::Huesped(const std::string& doc, int ant, float punt)
-    : documento(doc), antiguedad(ant), puntuacion(punt) {
+
+Huesped::Huesped(const std::string& doc, const std::string& nom, int ant, float punt, const std::string& reservacionesStr)
+    : documento(doc), nombre(nom), antiguedad(ant), puntuacion(punt) {
+    reservaciones = nullptr;
+    cantidadReservaciones = 0;
 
 }
 
 Huesped::~Huesped() {
-    //destructor
+    for (int i = 0; i < cantidadReservaciones; ++i) {
+        delete reservaciones[i];
+    }
+    delete[] reservaciones;
 }
 
-
-
-bool Huesped::hacerReservacion(const std::string& codigoReserva, const std::string& codigoInmueble,Alojamiento* alojamiento,
-                               const Fecha& fechaEntrada,unsigned short duracion,const std::string& metodoPago, float monto,
+bool Huesped::hacerReservacion(const std::string& codigoReserva, const std::string& codigoInmueble, Alojamiento* alojamiento,
+                               const Fecha& fechaEntrada, unsigned short duracion, const std::string& metodoPago, float monto,
                                const std::string& anotaciones, Reservacion*& listaReservaciones) {
 
-    Fecha fechaSalida = fechaEntrada.sumarDias(duracion);
+    Fecha fechaSalida = fechaEntrada + duracion;
 
-
-    if (!alojamiento->mostrarDisponibilidad(fechaEntrada, fechaSalida)) {
+    if (!alojamiento->estaDisponible(fechaEntrada, fechaSalida)) {
         return false;
     }
 
     if (listaReservaciones != nullptr) {
         Fecha otraEntrada = listaReservaciones->getFechaEntrada();
-        Fecha otraSalida = otraEntrada.sumarDias(listaReservaciones->getDuracion());
+        Fecha otraSalida = otraEntrada + listaReservaciones->getDuracion();
 
         if (!(fechaSalida <= otraEntrada || fechaEntrada >= otraSalida)) {
             return false;
@@ -43,24 +47,29 @@ bool Huesped::hacerReservacion(const std::string& codigoReserva, const std::stri
 
     alojamiento->agregarReservacion(listaReservaciones);
 
+    // Añadir al arreglo dinámico del huésped
+    Reservacion** nuevaLista = new Reservacion*[cantidadReservaciones + 1];
+    for (int i = 0; i < cantidadReservaciones; ++i) {
+        nuevaLista[i] = reservaciones[i];
+    }
+    nuevaLista[cantidadReservaciones] = listaReservaciones;
+
+    delete[] reservaciones;
+    reservaciones = nuevaLista;
+    cantidadReservaciones++;
+
     return true;
 }
 
 bool Huesped::cancelarReservacion(const std::string& codigoReservacion, Reservacion*& listaReservaciones) {
-
     if (listaReservaciones == nullptr) {
         return false;
     }
 
-
     if (listaReservaciones->getCodigoReserva() == codigoReservacion) {
-
-        listaReservaciones->getAlojamiento()->eliminarReservacion(codigoReservacion);
-
-
+        listaReservaciones->getInmueble()->eliminarReservacion(codigoReservacion);
         delete listaReservaciones;
         listaReservaciones = nullptr;
-
         return true;
     }
 
@@ -82,5 +91,4 @@ void Huesped::mostrarReservaciones() const {
         std::cout << "----------------------------------------------" << std::endl;
     }
 }
-
 
