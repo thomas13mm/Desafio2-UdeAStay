@@ -1,33 +1,35 @@
 #include <iostream>
 #include <string>
+#include "reservaciones.h"
 #include "Data.h"
 #include "alojamiento.h"
-#include "Fecha.h"
-#include "huesped.h"
-#include "reservaciones.h"
 #include "Letreros.h"
 
 using namespace std;
 
 int main(){
-    const unsigned int columnasA=5;
-    const unsigned int filasA=10;
-    const unsigned int columnasH=5;
-    const unsigned int filasH=100;
-    const unsigned int columnasI=5;
-    const unsigned int filasI=200;
-    const unsigned int columnasR=6;
-    const unsigned int filasR=400;
+    unsigned short int ReservasValidas=0;
+    const unsigned int CantidadAlojamiento=7;
+    const unsigned int CantidadReservas=7;
+    const string FileNameReservaciones="Reservaciones.txt";
+    const string FileNameAlojamiento="Inmuebles.txt";
+    string name= "Juan";
 
-    string** Anfitriones=CargarData(filasA,columnasA,"Anfitriones.txt");
-    string** Huespedes=CargarData(filasH,columnasH, "Huespedes.txt");
-    //string** Inmuebles=CargarData(filasI, columnasI, "Inmuebles.txt");
-    //string** Reservas=CargarData(filasR,columnasR,"Reservaciones.txt");
+    Alojamiento* Inmuebles = CargarObjetos(FileNameAlojamiento, CantidadAlojamiento, ReservasValidas);
+    for(int i=0; i<CantidadAlojamiento ;i++){
+        Inmuebles[i].mostrarInformacion();
+    }
+    Reservacion* Reservaciones= CargarObjetos(FileNameReservaciones, CantidadReservas, ReservasValidas, Inmuebles);
+    for(int i=0; i<CantidadAlojamiento ;i++){
+        Reservaciones[i].Mostrar_comprobante(name);
+    }
 
-    Bienvenida();
-    string ID=MenuLoggin();
+    //Bienvenida();
 
-    unsigned int iterador=0;
+
+    //string ID=MenuLoggin();
+
+    /*unsigned int iterador=0;
     bool ban=true;
     while(ban){
         if(Pertenece(Anfitriones,ID,filasA,iterador)){
@@ -46,7 +48,7 @@ int main(){
 
         }
     }
-
+*/
     cin.get();
     return 0;
 }

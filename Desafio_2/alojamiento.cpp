@@ -21,7 +21,6 @@ Alojamiento::Alojamiento(const string& nombre, string codigo,
 
 // Destructor
 Alojamiento::~Alojamiento() {
-    delete amenidades;
 }
 
 /*bool Alojamiento::mostrarDisponibilidad(Fecha inicio, Fecha fin) {
@@ -36,18 +35,22 @@ Alojamiento::~Alojamiento() {
 
 void Alojamiento::mostrarInformacion() {
     cout << "Nombre: " << nombre << endl;
-    cout << "Código: " << codigo << endl;
+    cout << "Codigo: " << codigo << endl;
     cout << "Departamento: " << departamento << endl;
     cout << "Municipio: " << municipio << endl;
     cout << "Tipo: " << tipo << endl;
-    cout << "Dirección: " << direccion << endl;
+    cout << "Direccion: " << direccion << endl;
     cout << "Precio por noche: " << precioPorNoche << endl;
 
     cout << "Amenidades: "<<amenidades; //aqui hacer un ciclo que separe el string por comas
     cout << endl;
+    cout<<'\n';
 }
 
 float Alojamiento::getPrecioPorNoche(){
-        return precioPorNoche;
+    return precioPorNoche;
+}
 
+string Alojamiento::getCodigoAlojamiento(){
+    return codigo;
 }

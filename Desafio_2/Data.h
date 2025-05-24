@@ -3,136 +3,43 @@
 
 #include<iostream>
 #include<fstream>
+#include<sstream>
 #include<string>
-#include"huesped.h"
 #include"alojamiento.h"
 #include"reservaciones.h"
 
 using namespace std;
 
+Alojamiento* CargarObjetos(const string fileName, const unsigned int &CantidadAlojamientos, unsigned short int &i) {
 
-template <typename Arreglo>
-void CargarObjetos(string fileName, Huesped* ptrK, const unsigned int &columnas);
-void CargarObjetos(string fileName, Alojamiento* ptrK, const unsigned int &columnas);
-void CargarObjetos(string fileName, Reservacion* ptrK, const unsigned int &columnas);
-Huesped* CargarData(const unsigned int &columnas, string name);
-
-Arreglo* CargarData(const unsigned int &columnas, string name) {
-    /*
-    Sinopsis:
-        Funcion encargada de crear una matriz parcialmente dinamica de strings
-    param:
-        -(const unsigned int)columnas: cantidad de columnas de la matriz
-        -(string)name: nombre del archivo que contiene la data
-*/
-    Arreglo* ArrObjects = new Arreglo*[columnas];
-    CargarObjetos(name, ArrObjects, columnas);
-    return ArrObjects;
-}
-
-void CargarObjetos(string fileName, Huesped* ptrK, const unsigned int &columnas) {
-    /*
-    Sinopsis:
-        Funcion encargada de cargar la estructura de datos llenando una matriz dinamica
-    Param:
-        -(const string)fileName: nombre del archivo
-        -(string**)ptrK: Apuntador la matriz
-        -(const unsigned int)filas: numero de filas de la matriz
-        -(const unsigned int)columnas: numero de columnas de la matriz
-*/
 
     ifstream Informacion(fileName);
     if (!Informacion.is_open()) {
         cout << "Error: No se pudo leer el archivo";
-        return;
+        return nullptr;
     }
+    Alojamiento* ptrK = new Alojamiento[CantidadAlojamientos];
 
     string temp = "";
-    string doc;
-    string nombre;
-    unsigned short int antiguedad;
-    float puntuacion;
-    string reservaciones;
-    unsigned int i = 0;
-    unsigned short int cast= 4;
-    char c;
-
-    while (Informacion.get(c)) {
-
-        if (c == ',') {
-            if (!temp.empty() && i < columnas ) {
-                switch (cast) {
-                case 1:
-                    puntuacion = float(temp);
-                    break;
-                case 2:
-                    antiguedad = unsigned short int(temp);
-                    cast--;
-                    break;
-                case 3:
-                    nombre = temp;
-                    cast--;
-                    break;
-                default:
-                    doc=temp;
-                    cast--;
-                    break;
-                }
-                temp = "";
-            }
-        } else if (c == '\n') {
-            if (!temp.empty() && i < columnas) {
-                reservaciones = temp;
-                temp = "";
-                ptrK[i]=Huesped::Huesped(doc,nombre,antiguedad,puntuacion,reservaciones);
-                i++;
-            }
-        } else {
-            temp += c;
-        }
-    }
-
-    if (!temp.empty() && i < filas) {
-        ptrK[i] = temp;
-    }
-
-    Informacion.close();
-}
-
-void CargarObjetos(string fileName, Alojamiento* ptrK, const unsigned int &columnas) {
-    /*
-    Sinopsis:
-        Funcion encargada de cargar la estructura de datos llenando una matriz dinamica
-    Param:
-        -(const string)fileName: nombre del archivo
-        -(string**)ptrK: Apuntador la matriz
-        -(const unsigned int)filas: numero de filas de la matriz
-        -(const unsigned int)columnas: numero de columnas de la matriz
-*/
-
-    ifstream Informacion(fileName);
-    if (!Informacion.is_open()) {
-        cout << "Error: No se pudo leer el archivo";
-        return;
-    }
-
-    string temp = "";
-    string doc;
-    string nombre;
-    unsigned short int antiguedad;
-    float puntuacion;
-    string reservaciones;
-    unsigned int i = 0;
+    string Amenidades;
+    string Nombre;
+    string municipio;
+    string departamento;
+    string tipo;
+    string Direccion;
+    string CodigoInmueble;
+    float ValorNoche;
     unsigned short int cast= 7;
     char c;
 
     while (Informacion.get(c)) {
 
-        if (c == ',') {
-            if (!temp.empty() && i < columnas ) {
+        if (c == ',' || c=='$') {
+            if (!temp.empty() && cast >= 1 ) {
                 switch (cast) {
                 case 1:
                     CodigoInmueble = temp;
+                    cast--;
                     break;
                 case 2:
                     Nombre =temp;
@@ -161,34 +68,46 @@ void CargarObjetos(string fileName, Alojamiento* ptrK, const unsigned int &colum
                 }
                 temp = "";
             }
-        } else if (c == '\n' || c=='$') {
-            if (!temp.empty() && i < columnas) {
-                float ValorNoche = stof(temp);
+        } else if (c == '\n') {
+            if (!temp.empty() ) {
+                ValorNoche = stof(temp);
                 temp = "";
-                ptrK[i]=Alojamiento::Alojamiento(Nombre,CodigoInmieble,departamento,municipio,tipo,Direccion,ValorNoche,Amenidades);
+                ptrK[i]=Alojamiento(Nombre,CodigoInmueble,departamento,municipio,tipo,Direccion,ValorNoche,Amenidades);
                 i++;
+                cast=7;
             }
         } else {
             temp += c;
         }
     }
-
+    if (!temp.empty()) {
+        ValorNoche = stof(temp);
+        ptrK[i] = Alojamiento(Nombre, CodigoInmueble, departamento, municipio, tipo, Direccion, ValorNoche, Amenidades);
+    }
+    i++;
     Informacion.close();
+    return ptrK;
 }
 
-void CargarObjetos(string fileName, Reservacion* ptrK, const unsigned int &columnas){
+Reservacion* CargarObjetos(const string fileName, const unsigned int &CantidadReservaciones, unsigned short int &ReservacionesValidas, Alojamiento* Alojamientos){
+
     ifstream Informacion(fileName);
     if (!Informacion.is_open()) {
         cout << "Error: No se pudo leer el archivo";
-        return;
+        return nullptr;
     }
+    Reservacion* ptrK = new Reservacion[CantidadReservaciones];
 
     string temp = "";
-    string doc;
-    string nombre;
-    unsigned short int antiguedad;
-    float puntuacion;
-    string reservaciones;
+    string CodigoReserva;
+    Alojamiento* AlojamientoReservado;
+    Fecha FechaEntrada;
+    unsigned short int Duracion;
+    string MetodoPay;
+    Fecha FechaPago;
+    float montoCancelado;
+    string Anotaciones;
+
     unsigned int i = 0;
     unsigned short int cast= 7;
     char c;
@@ -196,58 +115,68 @@ void CargarObjetos(string fileName, Reservacion* ptrK, const unsigned int &colum
     while (Informacion.get(c)) {
 
         if (c == ',') {
-            if (!temp.empty() && i < columnas ) {
+            if (!temp.empty() && cast >= 1 ) {
                 switch (cast) {
                 case 1:
-                    FechaPago = temp;
+                    montoCancelado = stof(temp);
+                    cast--;
                     break;
                 case 2:
-                    MetodoPago =temp;
+                    FechaPago =temp;
                     cast--;
                     break;
                 case 3:
-                    fecha_entrada=temp ;
+                    MetodoPay =temp ;
                     cast--;
                     break;
-                case 4:
-                    Codigo_Inmueble=temp.to_string;
+                case 4:{
+                    stringstream ss(temp);
+                    ss>>Duracion;
+                    cast--;
+                    break;
+                }
+                case 5:
+                    FechaEntrada=temp;
+                    cast--;
+                    break;
+                case 6:
+                    for(unsigned int i =0; i<ReservacionesValidas; i++){
+                        if((Alojamientos[i].getCodigoAlojamiento()) == temp){
+                            AlojamientoReservado= &Alojamientos[i];
+                            break;
+                        }
+                        else{
+                            AlojamientoReservado=nullptr;
+                        }
+                    }
                     cast--;
                     break;
                 default:
-                    CodigoReserva=temp.to_string();
+                    CodigoReserva=temp;
                     cast--;
                     break;
                 }
                 temp = "";
             }
-        } else if (c == '\n' || c=='$') {
-            if (!temp.empty() && i < columnas) {
-                float ValorNoche = stof(temp);
+        } else if (c == '\n') {
+            if (!temp.empty() ) {
+                Anotaciones = temp;
                 temp = "";
-                ptrK[i]=Alojamiento::Alojamiento(Nombre,CodigoInmieble,departamento,municipio,tipo,Direccion,ValorNoche,Amenidades);
+                ptrK[i]=Reservacion(CodigoReserva,AlojamientoReservado,FechaEntrada,Duracion,MetodoPay,montoCancelado,Anotaciones);
                 i++;
+                cast=7;
             }
         } else {
             temp += c;
         }
     }
+    if (!temp.empty()) {
+        Anotaciones = temp;
+        ptrK[i] =  Reservacion(CodigoReserva,AlojamientoReservado,FechaEntrada,Duracion,MetodoPay,montoCancelado,Anotaciones);
+    }
 
     Informacion.close();
+    return ptrK;
 }
 
-bool Pertenece(string** &matriz,string doc, const unsigned int &filas, unsigned int &i){
-    for (i = 0; i < filas; ++i) {
-        if (matriz[i].get == doc) {
-            return true;
-        }
-    }
-    i = 0;
-    return false;
-
-}
-
-
-
-
-
-#endif // DATA_H
+#endif

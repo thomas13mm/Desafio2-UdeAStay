@@ -18,6 +18,7 @@ private:
     string amenidades;
 
 public:
+    Alojamiento()=default;
     Alojamiento(const string& nombre, string codigo,
                 const string& departamento, const string& municipio,
                 const string& tipo, const string& direccion, float precio, string amenidadess);
@@ -27,6 +28,7 @@ public:
     //bool mostrarDisponibilidad(Fecha inicio, Fecha fin);
     void mostrarInformacion();
     float getPrecioPorNoche();
+    string getCodigoAlojamiento();
 };
 
 #endif

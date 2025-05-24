@@ -5,7 +5,6 @@
 #include "fecha.h"
 #include "alojamiento.h"
 
-
 using namespace std;
 
 class Reservacion{
@@ -15,16 +14,15 @@ class Reservacion{
     la clonacion de reservas y usando de forma eficiente la memoria.
     */
 
-    private:
-        string Codigo_Reserva;
-        string Codigo_Inmueble;
-        Alojamiento* Inmueble;
-        Fecha Fecha_Entrada;
-        unsigned short Duracion;
-        string Mpago;
-        float Monto;
-        string Anotaciones;
-    public:
+private:
+    string Codigo_Reserva;
+    Alojamiento* Inmueble;
+    Fecha Fecha_Entrada;
+    unsigned short Duracion;
+    string Mpago;
+    float Monto;
+    string Anotaciones;
+public:
     /*
     Constructor:
         La reservacion para un objeto de esta clase esta dada por:
@@ -40,15 +38,16 @@ class Reservacion{
         -(string)Anotaciones: string que guarda los comentarios del huesped para el hospedaje
 */
 
-        Reservacion(string, string, Alojamiento*, Fecha, unsigned int, string, float, string);
-        ~Reservacion();
-        string getCodigoReserva();
-        Fecha getFechaEntrada();
-        string getCodeInmueble();
-        unsigned int getDuracion();
-        float calcular_monto(float valor_noche, unsigned short cant_noches);
-        void Mostrar_comprobante();
-        bool Validar_Disponibilidad(Reservacion* Reservas);
+    Reservacion()=default;
+    Reservacion(string, Alojamiento*, Fecha, unsigned short int, string, float, string);
+    ~Reservacion();
+    string getCodigoReserva();
+    Fecha getFechaEntrada();
+    string getCodeInmueble();
+    unsigned int getDuracion();
+    float calcular_monto(float valor_noche, unsigned short cant_noches);
+    void Mostrar_comprobante(string user);
+    bool Validar_Disponibilidad(Reservacion* Reservas);
 };
 
 #endif // RESERVACIONES_H
