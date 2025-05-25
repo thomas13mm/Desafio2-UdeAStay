@@ -1,15 +1,9 @@
 #ifndef HUESPED_H
 #define HUESPED_H
 
-#include "reservaciones.h"
-#include "alojamiento.h"
-#include "fecha.h"
 #include <string>
+#include "Reservaciones.h"
 
-/**
- *  Huesped
- *  Representa un huésped del sistema de reservaciones
- */
 class Huesped {
 private:
     std::string documento;
@@ -17,19 +11,26 @@ private:
     int antiguedad;
     float puntuacion;
     Reservacion** reservaciones;
+    int capacidadReservaciones;
     int cantidadReservaciones;
 
+    void redimensionarReservaciones();
+
 public:
-    Huesped(const std::string& doc, const std::string& nombre, int antiguedad, float puntuacion, const std::string& reservacionesStr);
+    Huesped(const std::string& doc, const std::string& nombre,
+            int antiguedad, float puntuacion);
     ~Huesped();
 
-    bool hacerReservacion(const std::string& codigoReserva, const std::string& codigoInmueble, Alojamiento* alojamiento,
-                          const Fecha& fechaEntrada, unsigned short duracion, const std::string& metodoPago, float monto,
-                          const std::string& anotaciones, Reservacion*& listaReservaciones);
+    std::string getDocumento() const;
+    std::string getNombre() const;
+    int getAntiguedad() const;
+    float getPuntuacion() const;
 
-    bool cancelarReservacion(const std::string& codigoReservacion, Reservacion*& listaReservaciones);
-
+    bool hacerReservacion(Reservacion* reserva);
+    bool cancelarReservacion(const std::string& codigoReservacion);
     void mostrarReservaciones() const;
+    int getCantidadReservaciones() const;
+    Reservacion* getReservacion(int index) const;
 };
 
 #endif

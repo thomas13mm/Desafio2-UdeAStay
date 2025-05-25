@@ -1,6 +1,7 @@
 #ifndef FECHA_H
 #define FECHA_H
 
+#include <iostream>
 #include <string>
 
 class Fecha {
@@ -12,7 +13,6 @@ private:
 public:
     Fecha();
     Fecha(unsigned short int d, unsigned short int m, unsigned int a);
-
     Fecha(const std::string& fechaTexto);
 
     unsigned short int getDia() const;
@@ -24,7 +24,6 @@ public:
     bool VerificacionFecha() const;
     void mostrar() const;
 
-    // Operadores de comparación
     bool operator==(const Fecha& otra) const;
     bool operator!=(const Fecha& otra) const;
     bool operator<(const Fecha& otra) const;
@@ -32,7 +31,6 @@ public:
     bool operator>(const Fecha& otra) const;
     bool operator>=(const Fecha& otra) const;
 
-    // Operaciones con fechas
     void sumarDias(unsigned int dias);
     Fecha operator+(unsigned int dias) const;
 };

@@ -9,7 +9,6 @@ Fecha::Fecha(unsigned short int d, unsigned short int m, unsigned int a)
     : dia(d), mes(m), ano(a) {}
 
 Fecha::Fecha(const std::string& fechaTexto) {
-
     dia = 0;
     mes = 0;
     ano = 0;
@@ -17,15 +16,14 @@ Fecha::Fecha(const std::string& fechaTexto) {
     if (fechaTexto.size() >= 10) {
         dia = (fechaTexto[0] - '0') * 10 + (fechaTexto[1] - '0');
         mes = (fechaTexto[3] - '0') * 10 + (fechaTexto[4] - '0');
-        ano = (fechaTexto[6] - '0') * 1000 + (fechaTexto[7] - '0') * 100 + (fechaTexto[8] - '0') * 10 + (fechaTexto[9] - '0');
+        ano = (fechaTexto[6] - '0') * 1000 + (fechaTexto[7] - '0') * 100 +
+              (fechaTexto[8] - '0') * 10 + (fechaTexto[9] - '0');
     }
 }
 
-// Getters
 unsigned short int Fecha::getDia() const { return dia; }
 unsigned short int Fecha::getMes() const { return mes; }
 unsigned int Fecha::getAno() const { return ano; }
-
 
 const char* Fecha::getNombreMes() const {
     static const char* nombres[] = {
@@ -34,7 +32,6 @@ const char* Fecha::getNombreMes() const {
     };
     return (mes >= 1 && mes <= 12) ? nombres[mes - 1] : "Mes inválido";
 }
-
 
 int Fecha::getDiaSemana() const {
     int m = mes;
@@ -49,7 +46,6 @@ int Fecha::getDiaSemana() const {
     int j = y / 100;
     return (dia + 13 * (m + 1) / 5 + k + k / 4 + j / 4 + 5 * j) % 7;
 }
-
 
 bool Fecha::VerificacionFecha() const {
     if (dia == 0 || mes == 0 || ano == 0) return false;
@@ -66,14 +62,12 @@ bool Fecha::VerificacionFecha() const {
     return dia <= diasMes;
 }
 
-
 void Fecha::mostrar() const {
     cout << (dia < 10 ? "0" : "") << dia << "/"
          << (mes < 10 ? "0" : "") << mes << "/"
          << ano;
 }
 
-// --------- OPERADORES DE COMPARACIÓN IMPLEMENTADOS --------- //
 bool Fecha::operator==(const Fecha& otra) const {
     return (dia == otra.dia) && (mes == otra.mes) && (ano == otra.ano);
 }
@@ -99,7 +93,6 @@ bool Fecha::operator>(const Fecha& otra) const {
 bool Fecha::operator>=(const Fecha& otra) const {
     return !(*this < otra);
 }
-
 
 void Fecha::sumarDias(unsigned int dias) {
     *this = *this + dias;

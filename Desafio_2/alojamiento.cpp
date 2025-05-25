@@ -12,14 +12,26 @@ Alojamiento::Alojamiento(const string& nombre, const string& codigo,
     : nombre(nombre), codigo(codigo), departamento(departamento),
     municipio(municipio), tipo(tipo), direccion(direccion),
     precioPorNoche(precio), amenidades(amenidades),
-    reservaciones(nullptr), cantidadReservaciones(0) {}
+    reservaciones(nullptr), capacidadReservaciones(0), cantidadReservaciones(0) {}
 
 Alojamiento::~Alojamiento() {
-
     for (int i = 0; i < cantidadReservaciones; ++i) {
         delete reservaciones[i];
     }
     delete[] reservaciones;
+}
+
+void Alojamiento::redimensionarReservaciones() {
+    int nuevaCapacidad = (capacidadReservaciones == 0) ? 2 : capacidadReservaciones * 2;
+    Reservacion** nuevasReservaciones = new Reservacion*[nuevaCapacidad];
+
+    for (int i = 0; i < cantidadReservaciones; ++i) {
+        nuevasReservaciones[i] = reservaciones[i];
+    }
+
+    delete[] reservaciones;
+    reservaciones = nuevasReservaciones;
+    capacidadReservaciones = nuevaCapacidad;
 }
 
 void Alojamiento::mostrarInformacion() const {
@@ -50,6 +62,22 @@ string Alojamiento::getTipo() const {
     return tipo;
 }
 
+string Alojamiento::getDepartamento() const {
+    return departamento;
+}
+
+string Alojamiento::getMunicipio() const {
+    return municipio;
+}
+
+string Alojamiento::getDireccion() const {
+    return direccion;
+}
+
+string Alojamiento::getAmenidades() const {
+    return amenidades;
+}
+
 bool Alojamiento::estaDisponible(const Fecha& inicio, const Fecha& fin) const {
     for (int i = 0; i < cantidadReservaciones; ++i) {
         Fecha entradaExistente = reservaciones[i]->getFechaEntrada();
@@ -63,27 +91,14 @@ bool Alojamiento::estaDisponible(const Fecha& inicio, const Fecha& fin) const {
 }
 
 void Alojamiento::agregarReservacion(Reservacion* reserva) {
-
-    Reservacion** nuevasReservaciones = new Reservacion*[cantidadReservaciones + 1];
-
-
-    for (int i = 0; i < cantidadReservaciones; ++i) {
-        nuevasReservaciones[i] = reservaciones[i];
+    if (cantidadReservaciones >= capacidadReservaciones) {
+        redimensionarReservaciones();
     }
-
-
-    nuevasReservaciones[cantidadReservaciones] = reserva;
-
-
-    delete[] reservaciones;
-    reservaciones = nuevasReservaciones;
-    cantidadReservaciones++;
+    reservaciones[cantidadReservaciones++] = reserva;
 }
 
-void Alojamiento::eliminarReservacion(const string& codigoReserva) {
+bool Alojamiento::eliminarReservacion(const std::string& codigoReserva) {
     int indice = -1;
-
-    // Buscar la reservación
     for (int i = 0; i < cantidadReservaciones; ++i) {
         if (reservaciones[i]->getCodigoReserva() == codigoReserva) {
             indice = i;
@@ -91,23 +106,23 @@ void Alojamiento::eliminarReservacion(const string& codigoReserva) {
         }
     }
 
-    if (indice == -1) return;
+    if (indice == -1) return false;
 
+    delete reservaciones[indice];
 
-    Reservacion** nuevasReservaciones = new Reservacion*[cantidadReservaciones - 1];
-
-
-    for (int i = 0, j = 0; i < cantidadReservaciones; ++i) {
-        if (i != indice) {
-            nuevasReservaciones[j++] = reservaciones[i];
-        }
+    for (int i = indice; i < cantidadReservaciones - 1; ++i) {
+        reservaciones[i] = reservaciones[i + 1];
     }
 
-    // Liberar memoria
-    delete reservaciones[indice];
-    delete[] reservaciones;
-
-
-    reservaciones = nuevasReservaciones;
     cantidadReservaciones--;
+    return true;
+}
+
+int Alojamiento::getCantidadReservaciones() const {
+    return cantidadReservaciones;
+}
+
+Reservacion* Alojamiento::getReservacion(int index) const {
+    if (index < 0 || index >= cantidadReservaciones) return nullptr;
+    return reservaciones[index];
 }

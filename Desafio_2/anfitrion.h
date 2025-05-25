@@ -4,24 +4,29 @@
 #include <string>
 #include "Alojamiento.h"
 #include "Fecha.h"
-#include "reservaciones.h"
+#include "Reservaciones.h"
 
 class Anfitrion {
 private:
     std::string documento;
-    Alojamiento* propiedades;
-    unsigned int cantidadPropiedades;
+    Alojamiento** propiedades;
+    int cantidadPropiedades;
+    int capacidadPropiedades;
+
+    void redimensionarPropiedades();
 
 public:
-    Anfitrion(std::string documento, Alojamiento* propiedades, unsigned int cantidad);
+    Anfitrion(const std::string& documento);
     ~Anfitrion();
 
-    bool cancelarReservacion(std::string codigoReserva, Reservacion** reservaciones, unsigned int totalReservaciones);
+    void agregarPropiedad(Alojamiento* propiedad);
+    bool cancelarReservacion(const std::string& codigoReserva);
+    void consultarReservacionesActivas(const Fecha& fechaInicio, const Fecha& fechaFin) const;
+    void actualizarHistorico(const Fecha& fechaCorte);
 
-    void consultarReservacionesActivas(Reservacion** reservaciones, unsigned int totalReservaciones,
-                                       Fecha fechaInicio, Fecha fechaFin);
-
-    void actualizarHistorico(Fecha fechaCorte, Reservacion** reservaciones, unsigned int& totalReservaciones);
+    std::string getDocumento() const;
+    int getCantidadPropiedades() const;
+    Alojamiento* getPropiedad(int index) const;
 };
 
 #endif

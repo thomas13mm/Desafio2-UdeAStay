@@ -22,13 +22,12 @@ public:
                 const std::string& codigoInmueble,
                 Alojamiento* alojamiento,
                 const Fecha& fechaEntrada,
-                unsigned short  duracion,
+                unsigned short duracion,
                 const std::string& metodoPago,
                 float monto,
                 const std::string& anotaciones);
 
     ~Reservacion();
-
 
     std::string getCodigoReserva() const;
     std::string getCodeInmueble() const;
@@ -36,11 +35,11 @@ public:
     unsigned short getDuracion() const;
     Alojamiento* getInmueble() const;
     float getMonto() const;
+    std::string getMetodoPago() const;
+    std::string getAnotaciones() const;
 
-
-    static float calcular_monto(float valor_noche, unsigned short cant_noches);
-    void Mostrar_comprobante() const;
-    bool Validar_Disponibilidad(Reservacion* reservas, int cantidad) const;
+    static float calcularMonto(float valorNoche, unsigned short cantNoches);
+    void mostrarComprobante() const;
 };
 
 #endif
