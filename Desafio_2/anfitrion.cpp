@@ -1,7 +1,7 @@
 #include "Anfitrion.h"
 #include <fstream>
 #include <iostream>
-
+#include <iomanip>
 Anfitrion::Anfitrion(const std::string& doc)
     : documento(doc), propiedades(nullptr),
     cantidadPropiedades(0), capacidadPropiedades(0) {}
@@ -40,7 +40,7 @@ bool Anfitrion::cancelarReservacion(const std::string& codigoReserva) {
 }
 
 void Anfitrion::consultarReservacionesActivas(const Fecha& fechaInicio, const Fecha& fechaFin) const {
-    std::cout << "\nReservaciones activas para el anfitrión " << documento << " entre ";
+    std::cout << "\nReservaciones activas para el anfitrion " << documento << " entre ";
     fechaInicio.mostrar();
     std::cout << " y ";
     fechaFin.mostrar();
@@ -59,7 +59,7 @@ void Anfitrion::consultarReservacionesActivas(const Fecha& fechaInicio, const Fe
                 if (!(fechaSalida < fechaInicio) && !(fechaFin < fechaEntrada)) {
                     encontradas = true;
                     std::cout << "\nReserva #" << i + 1 << ":\n";
-                    std::cout << "Código: " << reserva->getCodigoReserva() << "\n";
+                    std::cout << "Codigo: " << reserva->getCodigoReserva() << "\n";
                     std::cout << "Inmueble: " << propiedad->getNombre() << "\n";
                     std::cout << "Fecha Entrada: ";
                     fechaEntrada.mostrar();
@@ -79,7 +79,7 @@ void Anfitrion::consultarReservacionesActivas(const Fecha& fechaInicio, const Fe
 void Anfitrion::actualizarHistorico(const Fecha& fechaCorte) {
     std::ofstream archivo("historico_" + documento + ".txt", std::ios::app);
     if (!archivo.is_open()) {
-        std::cerr << "Error al abrir el archivo histórico\n";
+        std::cerr << "Error al abrir/crear el archivo historico\n";
         return;
     }
 
@@ -93,16 +93,18 @@ void Anfitrion::actualizarHistorico(const Fecha& fechaCorte) {
                 Fecha fechaEntrada = reserva->getFechaEntrada();
 
                 if (fechaEntrada < fechaCorte) {
-                    archivo << "Código Reserva: " << reserva->getCodigoReserva() << "\n";
+                    // Escribir en el histórico
+                    archivo << "codigoReserva: " << reserva->getCodigoReserva() << "\n";
                     archivo << "Código Inmueble: " << propiedad->getCodigo() << "\n";
-                    archivo << "Fecha Entrada: ";
-                    fechaEntrada.mostrar();
-                    archivo << "\nDuración: " << reserva->getDuracion() << " noches\n";
+                    archivo << "Fecha Entrada: " << fechaEntrada.toString() << "\n";
+                    archivo << "Duracion " << reserva->getDuracion() << " noches\n";
+                    archivo << "Monto: " << std::fixed << std::setprecision(2) << reserva->getMonto() << "\n";
                     archivo << "--------------------------------\n";
 
-                    delete reserva;
+
                     propiedad->eliminarReservacion(reserva->getCodigoReserva());
                     reservasMovidas++;
+
                 } else {
                     j++;
                 }

@@ -1,6 +1,6 @@
 #include "Fecha.h"
 #include <iostream>
-
+#include <sstream>
 using namespace std;
 
 Fecha::Fecha() : dia(0), mes(0), ano(0) {}
@@ -123,4 +123,13 @@ Fecha Fecha::operator+(unsigned int dias) const {
         }
     }
     return resultado;
+}
+
+
+std::string Fecha::toString() const {
+    std::ostringstream oss;
+    oss << (dia < 10 ? "0" : "") << dia << "-"
+        << (mes < 10 ? "0" : "") << mes << "-"
+        << ano;
+    return oss.str();
 }

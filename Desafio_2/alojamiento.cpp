@@ -37,13 +37,11 @@ void Alojamiento::redimensionarReservaciones() {
 void Alojamiento::mostrarInformacion() const {
     cout << "Nombre: " << nombre << endl;
     cout << "Código: " << codigo << endl;
-    cout << "Departamento: " << departamento << endl;
-    cout << "Municipio: " << municipio << endl;
-    cout << "Tipo: " << tipo << endl;
+    cout << "Ubicación: " << departamento << ", " << municipio << endl;
     cout << "Dirección: " << direccion << endl;
-    cout << "Precio por noche: " << precioPorNoche << endl;
+    cout << "Tipo: " << tipo << endl;
+    cout << "Precio por noche: $" << precioPorNoche << endl;
     cout << "Amenidades: " << amenidades << endl;
-    cout << "Reservaciones activas: " << cantidadReservaciones << endl;
 }
 
 float Alojamiento::getPrecioPorNoche() const {
@@ -80,16 +78,16 @@ string Alojamiento::getAmenidades() const {
 
 bool Alojamiento::estaDisponible(const Fecha& inicio, const Fecha& fin) const {
     for (int i = 0; i < cantidadReservaciones; ++i) {
-        Fecha entradaExistente = reservaciones[i]->getFechaEntrada();
-        Fecha salidaExistente = entradaExistente + reservaciones[i]->getDuracion();
+        Fecha inicioReserva = reservaciones[i]->getFechaEntrada();
+        Fecha finReserva = inicioReserva + reservaciones[i]->getDuracion();
 
-        if (!(fin <= entradaExistente || inicio >= salidaExistente)) {
+        // Si hay solapamiento, no está disponible
+        if (!(fin < inicioReserva || inicio > finReserva)) {
             return false;
         }
     }
-    return true;
+    return true; // Disponible
 }
-
 void Alojamiento::agregarReservacion(Reservacion* reserva) {
     if (cantidadReservaciones >= capacidadReservaciones) {
         redimensionarReservaciones();
@@ -97,25 +95,18 @@ void Alojamiento::agregarReservacion(Reservacion* reserva) {
     reservaciones[cantidadReservaciones++] = reserva;
 }
 
-bool Alojamiento::eliminarReservacion(const std::string& codigoReserva) {
-    int indice = -1;
+bool Alojamiento::eliminarReservacion(const std::string& codigo) {
     for (int i = 0; i < cantidadReservaciones; ++i) {
-        if (reservaciones[i]->getCodigoReserva() == codigoReserva) {
-            indice = i;
-            break;
+        if (reservaciones[i] && reservaciones[i]->getCodigoReserva() == codigo) {
+            // Solo eliminamos la referencia, no el objeto
+            for (int j = i; j < cantidadReservaciones - 1; ++j) {
+                reservaciones[j] = reservaciones[j + 1];
+            }
+            cantidadReservaciones--;
+            return true;
         }
     }
-
-    if (indice == -1) return false;
-
-    delete reservaciones[indice];
-
-    for (int i = indice; i < cantidadReservaciones - 1; ++i) {
-        reservaciones[i] = reservaciones[i + 1];
-    }
-
-    cantidadReservaciones--;
-    return true;
+    return false;
 }
 
 int Alojamiento::getCantidadReservaciones() const {

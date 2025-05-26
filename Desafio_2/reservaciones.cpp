@@ -20,6 +20,10 @@ Reservacion::~Reservacion() {}
 std::string Reservacion::getCodigoReserva() const { return Codigo_Reserva; }
 std::string Reservacion::getCodeInmueble() const { return Codigo_Inmueble; }
 Fecha Reservacion::getFechaEntrada() const { return Fecha_Entrada; }
+Fecha Reservacion::getFechaPago() const {
+    return Fecha_Entrada;
+}
+
 unsigned short Reservacion::getDuracion() const { return Duracion; }
 Alojamiento* Reservacion::getInmueble() const { return Inmueble; }
 float Reservacion::getMonto() const { return Monto; }
@@ -32,7 +36,7 @@ float Reservacion::calcularMonto(float valorNoche, unsigned short cantNoches) {
 
 void Reservacion::mostrarComprobante() const {
     std::cout << "----- Comprobante de Reservación -----" << std::endl;
-    std::cout << "Código Reserva: " << Codigo_Reserva << std::endl;
+    std::cout << "Codigo Reserva: " << Codigo_Reserva << std::endl;
     std::cout << "Código Inmueble: " << Codigo_Inmueble << std::endl;
     if (Inmueble) {
         std::cout << "Nombre Inmueble: " << Inmueble->getNombre() << std::endl;
@@ -40,8 +44,8 @@ void Reservacion::mostrarComprobante() const {
     std::cout << "Fecha de Entrada: ";
     Fecha_Entrada.mostrar();
     std::cout << std::endl;
-    std::cout << "Duración: " << Duracion << " noches" << std::endl;
-    std::cout << "Método de Pago: " << Mpago << std::endl;
+    std::cout << "Duracion: " << Duracion << " noches" << std::endl;
+    std::cout << "Metodo de Pago: " << Mpago << std::endl;
     std::cout << "Monto Total: $" << Monto << std::endl;
     std::cout << "Anotaciones: " << Anotaciones << std::endl;
     std::cout << "-------------------------------------" << std::endl;

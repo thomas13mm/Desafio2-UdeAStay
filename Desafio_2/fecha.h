@@ -18,6 +18,7 @@ public:
     unsigned short int getDia() const;
     unsigned short int getMes() const;
     unsigned int getAno() const;
+    std::string toString() const;
 
     const char* getNombreMes() const;
     int getDiaSemana() const;

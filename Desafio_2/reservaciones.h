@@ -32,6 +32,8 @@ public:
     std::string getCodigoReserva() const;
     std::string getCodeInmueble() const;
     Fecha getFechaEntrada() const;
+    Fecha getFechaPago() const;  // Asumiremos que es igual a Fecha_Entrada
+
     unsigned short getDuracion() const;
     Alojamiento* getInmueble() const;
     float getMonto() const;

@@ -3,6 +3,7 @@
 #include "alojamiento.h"
 #include <iostream>
 
+
 Huesped::Huesped(const std::string& doc, const std::string& nom,
                  int ant, float punt)
     : documento(doc), nombre(nom), antiguedad(ant), puntuacion(punt),
@@ -42,29 +43,17 @@ bool Huesped::hacerReservacion(Reservacion* reserva) {
 }
 
 bool Huesped::cancelarReservacion(const std::string& codigoReservacion) {
-    int indice = -1;
     for (int i = 0; i < cantidadReservaciones; ++i) {
-        if (reservaciones[i]->getCodigoReserva() == codigoReservacion) {
-            indice = i;
-            break;
+        if (reservaciones[i] && reservaciones[i]->getCodigoReserva() == codigoReservacion) {
+            // Solo eliminar la referencia, no el objeto
+            for (int j = i; j < cantidadReservaciones - 1; ++j) {
+                reservaciones[j] = reservaciones[j + 1];
+            }
+            cantidadReservaciones--;
+            return true;
         }
     }
-
-    if (indice == -1) return false;
-
-    Alojamiento* alojamiento = reservaciones[indice]->getInmueble();
-    if (alojamiento) {
-        alojamiento->eliminarReservacion(codigoReservacion);
-    }
-
-    delete reservaciones[indice];
-
-    for (int i = indice; i < cantidadReservaciones - 1; ++i) {
-        reservaciones[i] = reservaciones[i + 1];
-    }
-
-    cantidadReservaciones--;
-    return true;
+    return false;
 }
 
 void Huesped::mostrarReservaciones() const {
