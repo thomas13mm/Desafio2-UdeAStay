@@ -5,8 +5,8 @@
 
 
 Huesped::Huesped(const std::string& doc, const std::string& nom,
-                 int ant, float punt)
-    : documento(doc), nombre(nom), antiguedad(ant), puntuacion(punt),
+                 int ant, float punt,const std::string& p)
+    : documento(doc), nombre(nom), antiguedad(ant), puntuacion(punt), pin(p),
     reservaciones(nullptr), capacidadReservaciones(0), cantidadReservaciones(0) {}
 
 Huesped::~Huesped() {
@@ -78,4 +78,7 @@ int Huesped::getCantidadReservaciones() const {
 Reservacion* Huesped::getReservacion(int index) const {
     if (index < 0 || index >= cantidadReservaciones) return nullptr;
     return reservaciones[index];
+}
+bool Huesped::verificarPin(const std::string& pinIngresado) const {
+    return pin == pinIngresado;
 }

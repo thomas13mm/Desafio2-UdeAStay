@@ -92,7 +92,10 @@ Huesped* SistemaReservaciones::buscarHuesped(const std::string& documento)const 
 
 Alojamiento* SistemaReservaciones::buscarAlojamiento(const std::string& codigo) {
     for (int i = 0; i < cantidadAlojamientos; ++i) {
-        if (alojamientos[i]->getCodigo() == codigo) {
+        string codigoCompleto = alojamientos[i]->getCodigo();
+        string codigoCorto = codigoCompleto.substr(codigoCompleto.find('-') + 1);
+
+        if (codigoCompleto == codigo || codigoCorto == codigo) {
             return alojamientos[i];
         }
     }
@@ -143,7 +146,7 @@ void SistemaReservaciones::cargarDatos(const std::string& archivoHuespedes,
         string linea;
         while (getline(fileHuespedes, linea)) {
             stringstream ss(linea);
-            string documento, nombre, reservasStr;
+            string documento, nombre, reservasStr,pin;
             int antiguedad;
             float puntuacion;
 
@@ -153,17 +156,47 @@ void SistemaReservaciones::cargarDatos(const std::string& archivoHuespedes,
             ss >> antiguedad;
             ss.ignore();
             ss >> puntuacion;
+            ss.ignore();
+            getline(ss, pin);
 
             if (cantidadHuespedes >= capacidadHuespedes) {
                 redimensionarHuespedes();
             }
 
-            huespedes[cantidadHuespedes++] = new Huesped(documento, nombre, antiguedad, puntuacion);
+            huespedes[cantidadHuespedes++] = new Huesped(documento, nombre, antiguedad, puntuacion,pin);
         }
         fileHuespedes.close();
     }
 
-    // Cargar alojamientos
+    // Cargar anfitriones
+    ifstream fileAnfitriones("anfitriones.txt");
+    if (fileAnfitriones.is_open()) {
+        string linea;
+        while (getline(fileAnfitriones, linea)) {
+            stringstream ss(linea);
+
+            string documento, nombre,pin;
+            int antiguedad;
+            float puntuacion;
+
+            getline(ss, documento, ',');
+            getline(ss, nombre, ',');
+            ss >> antiguedad;
+            ss.ignore();
+            ss >> puntuacion;
+            ss.ignore();
+            getline(ss, pin);
+
+            if (cantidadAnfitriones >= capacidadAnfitriones) {
+                redimensionarAnfitriones();
+            }
+
+            anfitriones[cantidadAnfitriones++] = new Anfitrion(documento,pin);
+
+        }
+        fileAnfitriones.close();
+    }
+
     ifstream fileAlojamientos(archivoAlojamientos);
     if (fileAlojamientos.is_open()) {
         string linea;
@@ -181,29 +214,41 @@ void SistemaReservaciones::cargarDatos(const std::string& archivoHuespedes,
             getline(ss, codigo, ',');
             ss >> precio;
 
+
+
+
             if (cantidadAlojamientos >= capacidadAlojamientos) {
                 redimensionarAlojamientos();
             }
-
-            alojamientos[cantidadAlojamientos++] = new Alojamiento(
+            alojamientos[cantidadAlojamientos] = new Alojamiento(
                 nombre, codigo, departamento, municipio, tipo,
                 direccion, precio, amenidades
                 );
 
 
-            string documentoAnfitrion = codigo.substr(0, codigo.find('-'));
-            if (!buscarAnfitrion(documentoAnfitrion)) {
-                if (cantidadAnfitriones >= capacidadAnfitriones) {
-                    redimensionarAnfitriones();
-                }
-                anfitriones[cantidadAnfitriones++] = new Anfitrion(documentoAnfitrion);
+            size_t guionPos = codigo.find('-');
+            if (guionPos == string::npos) {
+                cerr << "Error: Código sin formato 'documento-codigo': " << codigo << endl;
+                continue;
             }
+            string documentoAnfitrion = codigo.substr(0, guionPos);
 
 
             Anfitrion* anfitrion = buscarAnfitrion(documentoAnfitrion);
-            if (anfitrion) {
-                anfitrion->agregarPropiedad(alojamientos[cantidadAlojamientos-1]);
+            if (!anfitrion) {
+                if (cantidadAnfitriones >= capacidadAnfitriones) {
+                    redimensionarAnfitriones();
+                }
+                anfitrion = new Anfitrion(documentoAnfitrion, "0000");
+                anfitriones[cantidadAnfitriones++] = anfitrion;
+                cout << "Nuevo anfitrión creado: " << documentoAnfitrion << endl;
             }
+
+
+            anfitrion->agregarPropiedad(alojamientos[cantidadAlojamientos]);
+
+
+            cantidadAlojamientos++;
         }
         fileAlojamientos.close();
     }
@@ -290,33 +335,61 @@ bool SistemaReservaciones::hacerReservacion(const std::string& documentoHuesped,
     alojamiento->agregarReservacion(reservaciones[cantidadReservaciones]);
     huesped->hacerReservacion(reservaciones[cantidadReservaciones]);
     cantidadReservaciones++;
-
+    guardarReservacionesActivas();
     return true;
 }
+void SistemaReservaciones::guardarReservacionesActivas() {
+    ofstream file("reservaciones.txt", ios::trunc);
+    if (!file.is_open()) {
+        cerr << "Error al abrir el archivo de reservaciones para escritura." << endl;
+        return;
+    }
+
+    for (int i = 0; i < cantidadReservaciones; ++i) {
+        Reservacion* r = reservaciones[i];
+
+        file << r->getCodigoReserva() << ","
+             << r->getCodeInmueble() << ","
+             << r->getFechaEntrada().toString() << ","
+             << r->getMetodoPago() << ","
+             << r->getFechaPago().toString() << ","
+             << r->getMonto()
+             << "$\n";
+    }
+
+    file.close();
+}
+
 
 bool SistemaReservaciones::cancelarReservacion(const std::string& codigoReserva) {
     for (int i = 0; i < cantidadReservaciones; ++i) {
         if (reservaciones[i]->getCodigoReserva() == codigoReserva) {
-            // Eliminar de alojamiento
-            Alojamiento* alojamiento = reservaciones[i]->getInmueble();
-            if (alojamiento) {
-                alojamiento->eliminarReservacion(codigoReserva);
+            Alojamiento* aloj = reservaciones[i]->getInmueble();
+            if (aloj) {
+                if (!aloj->eliminarReservacion(codigoReserva)) {
+                    cerr << "Error: No se pudo eliminar la reserva del alojamiento." << endl;
+                    return false;
+                }
             }
 
-            // Eliminar reservación
             delete reservaciones[i];
 
-            // Mover las demás reservaciones
             for (int j = i; j < cantidadReservaciones - 1; ++j) {
                 reservaciones[j] = reservaciones[j + 1];
             }
             cantidadReservaciones--;
 
+
+            guardarReservacionesActivas();
+
+            cout << "Reserva cancelada exitosamente." << endl;
             return true;
         }
     }
+    cerr << "Error: Reservación no encontrada." << endl;
     return false;
 }
+
 
 bool SistemaReservaciones::cancelarReservacionAnfitrion(const std::string& documentoAnfitrion,
                                                         const std::string& codigoReserva) {
@@ -351,7 +424,9 @@ bool SistemaReservaciones::cancelarReservacionAnfitrion(const std::string& docum
                     reservaciones[j] = reservaciones[j + 1];
                 }
                 cantidadReservaciones--;
+                guardarReservacionesActivas(); // ← Aquí
 
+                cout << "Reserva cancelada exitosamente." << endl;
                 return true;
             }
         }
@@ -413,17 +488,21 @@ void SistemaReservaciones::mostrarReservacionesHuesped(const std::string& docume
     if (huesped) {
         huesped->mostrarReservaciones();
     } else {
-        cout << "Huésped no encontrado." << endl;
+        cout << "Huesped no encontrado." << endl;
     }
 }
 
 void SistemaReservaciones::mostrarReservacionesAnfitrion(const std::string& documentoAnfitrion) const {
     Anfitrion* anfitrion = buscarAnfitrion(documentoAnfitrion);
     if (anfitrion) {
-        cout << "\n=== PROPIEDADES DEL ANFITRION ===" << endl;
+        cout << "\n=== PROPIEDADES DEL ANFITRION (" << documentoAnfitrion << ") ===" << endl;
         for (int i = 0; i < anfitrion->getCantidadPropiedades(); ++i) {
-            anfitrion->getPropiedad(i)->mostrarInformacion();
-            cout << "------------------------" << endl;
+            Alojamiento* propiedad = anfitrion->getPropiedad(i);
+            if (propiedad) {
+                cout << "\nPropiedad #" << i + 1 << ":\n";
+                propiedad->mostrarInformacion(); // Muestra detalles del alojamiento
+                cout << "------------------------" << endl;
+            }
         }
     } else {
         cout << "Anfitrión no encontrado." << endl;
@@ -437,7 +516,7 @@ void SistemaReservaciones::mostrarReservacionesAnfitrion(const std::string& docu
     if (anfitrion) {
         anfitrion->consultarReservacionesActivas(fechaInicio, fechaFin);
     } else {
-        cout << "Anfitrión no encontrado." << endl;
+        cout << "Anfitrion no encontrado." << endl;
     }
 }
 
@@ -447,7 +526,7 @@ void SistemaReservaciones::actualizarHistoricoAnfitrion(const std::string& docum
     if (anfitrion) {
         anfitrion->actualizarHistorico(fechaCorte);
     } else {
-        cout << "Anfitrión no encontrado." << endl;
+        cout << "Anfitrion no encontrado." << endl;
     }
 }
 

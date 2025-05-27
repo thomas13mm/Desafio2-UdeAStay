@@ -28,6 +28,7 @@ private:
     int cantidadReservaciones;
     int capacidadReservaciones;
 
+    void guardarReservacionesActivas();
 
     void redimensionarHuespedes();
     void redimensionarAlojamientos();

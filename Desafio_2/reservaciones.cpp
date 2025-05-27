@@ -50,3 +50,4 @@ void Reservacion::mostrarComprobante() const {
     std::cout << "Anotaciones: " << Anotaciones << std::endl;
     std::cout << "-------------------------------------" << std::endl;
 }
+

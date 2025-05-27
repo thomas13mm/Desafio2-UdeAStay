@@ -81,12 +81,12 @@ bool Alojamiento::estaDisponible(const Fecha& inicio, const Fecha& fin) const {
         Fecha inicioReserva = reservaciones[i]->getFechaEntrada();
         Fecha finReserva = inicioReserva + reservaciones[i]->getDuracion();
 
-        // Si hay solapamiento, no está disponible
+
         if (!(fin < inicioReserva || inicio > finReserva)) {
             return false;
         }
     }
-    return true; // Disponible
+    return true;
 }
 void Alojamiento::agregarReservacion(Reservacion* reserva) {
     if (cantidadReservaciones >= capacidadReservaciones) {

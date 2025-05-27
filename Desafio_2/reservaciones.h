@@ -32,7 +32,7 @@ public:
     std::string getCodigoReserva() const;
     std::string getCodeInmueble() const;
     Fecha getFechaEntrada() const;
-    Fecha getFechaPago() const;  // Asumiremos que es igual a Fecha_Entrada
+    Fecha getFechaPago() const;
 
     unsigned short getDuracion() const;
     Alojamiento* getInmueble() const;

@@ -2,8 +2,9 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
-Anfitrion::Anfitrion(const std::string& doc)
-    : documento(doc), propiedades(nullptr),
+
+Anfitrion::Anfitrion(const std::string& doc,const std::string& p)
+    : documento(doc), pin (p),  propiedades(nullptr),
     cantidadPropiedades(0), capacidadPropiedades(0) {}
 
 Anfitrion::~Anfitrion() {
@@ -127,4 +128,7 @@ int Anfitrion::getCantidadPropiedades() const {
 Alojamiento* Anfitrion::getPropiedad(int index) const {
     if (index < 0 || index >= cantidadPropiedades) return nullptr;
     return propiedades[index];
+}
+bool Anfitrion::verificarPin(const std::string& pinIngresado) const {
+    return pin == pinIngresado;
 }

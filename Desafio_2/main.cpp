@@ -2,7 +2,9 @@
 #include <string>
 #include "Data.h"
 #include "Fecha.h"
-
+#include "anfitrion.h"
+#include "huesped.h"
+#include "login.h"
 using namespace std;
 
 void mostrarMenuPrincipal();
@@ -10,6 +12,7 @@ void mostrarMenuHuesped();
 void mostrarMenuAnfitrion();
 void procesarOpcionHuesped(SistemaReservaciones& sistema, const string& documento);
 void procesarOpcionAnfitrion(SistemaReservaciones& sistema, const string& documento);
+void mostrarMenuPrincipal();
 
 int main() {
 
@@ -30,19 +33,14 @@ int main() {
         mostrarMenuPrincipal();
         cout << "Ingrese su opcion: ";
         cin >> opcion;
-
         cin.ignore();
 
         switch(opcion) {
         case 1:
-            cout << "Ingrese su documento: ";
-            getline(cin, documento);
-            procesarOpcionHuesped(sistema, documento);
+            procesarLoginHuesped(sistema);
             break;
         case 2:
-            cout << "Ingrese su documento: ";
-            getline(cin, documento);
-            procesarOpcionAnfitrion(sistema, documento);
+            procesarLoginAnfitrion(sistema);
             break;
         case 3:
             cout << "Saliendo del sistema..." << endl;
@@ -54,7 +52,6 @@ int main() {
 
     return 0;
 }
-
 void mostrarMenuPrincipal() {
     cout << "\n=== SISTEMA DE RESERVACIONES ===" << endl;
     cout << "1. Ingresar como Huesped" << endl;
