@@ -1,7 +1,7 @@
-Casa,Antioquia,Bello,Av44a #63-109,Piscina-Jardin-Balcones,La niña,AA00,80000$
-Apartamento,Antioquia,La estrella,Av56b #58-115,Piscina-Balcones,La pinta,AA01,50000$
-Casa,Antioquia,Arboletes,Carrera 85a #62-138,Piscina-Cochera-gym,La santa maria,AA02,200000$
-Apartamento,Antioquia,Bello,Carrera 65a #85-420,Balcones-Jardin-Gym,Empire states,AA03,1000000$
-Apartamento,Antioquia,Arboletes,Calle 45c Udea,Cochera-Gym,Twin towers,AA04,500000$
-Casa,Antioquia,La estrella,Av44a #85-128,Piscina,Motel 65,AA05,30000$
-Apartamento,Antioquia,Envigado,Av56b #58-115,Jardin-Gym,Chernobyl,AA06,250000$
+Casa,Antioquia,Bello,Av44a #63-109,Piscina-Jardin-Balcones,La niña,1031652301-AA00,80000$
+Apartamento,Antioquia,La estrella,Av56b #58-115,Piscina-Balcones,La pinta,1033488376-AA01,50000$
+Casa,Antioquia,Arboletes,Carrera 85a #62-138,Piscina-Cochera-gym,La santa maria,1020401664-AA02,200000$
+Apartamento,Antioquia,Bello,Carrera 65a #85-420,Balcones-Jardin-Gym,Empire states,1031652301-AA03,1000000$
+Apartamento,Antioquia,Arboletes,Calle 45c Udea,Cochera-Gym,Twin towers,1033488376-AA04,500000$
+Casa,Antioquia,La estrella,Av44a #85-128,Piscina,Motel 65,1020401664-AA05,30000$
+Apartamento,Antioquia,Envigado,Av56b #58-115,Jardin-Gym,Chernobyl,1031652301-AA06,250000$
