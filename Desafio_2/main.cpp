@@ -7,7 +7,7 @@
 #include "login.h"
 using namespace std;
 
-void mostrarMenuPrincipal();
+
 void mostrarMenuHuesped();
 void mostrarMenuAnfitrion();
 void procesarOpcionHuesped(SistemaReservaciones& sistema, const string& documento);
