@@ -1,0 +1,6 @@
+7384926150,Sofía Ramírez,2,1.5,1111
+9251748360,Luca Fernández,5,2.6,2222
+4815296374,Valentina Morales,4,4.5,3333
+6938471520,Mateo Herrera,8,5.0,4444
+3572918460,Camila Vega,9,2.0,5555
+8204659137,Diego Rojas,2,1.1,6666
